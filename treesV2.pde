@@ -9,6 +9,7 @@ float wr = 1.5;
 float wl = 1.5;
 color c;
 PGraphics g;
+int recIters = 0, maxIters = 35000;
 
 
 TUI tui;
@@ -43,14 +44,16 @@ void draw() {
     }
     g.beginDraw();
     g.clear();
+    recIters = 0;
     drawBranch(4, 80, 0, width*.4, height*1.1, wl, wr, c);
     g.endDraw();
     image(g, 0, 0);
   tui.display();
+  println("recIters: " + recIters);
 }
 
 void drawBranch(float w, float s, float theta, float x, float y, float wr, float wl, color c) {
-  
+  recIters++;
   color newCR, newCL;
   
   if (wr>wl) {
@@ -66,7 +69,7 @@ void drawBranch(float w, float s, float theta, float x, float y, float wr, float
   g.translate(x, y);
   g.rotate(theta);
   g.line(0, 0, 0, -s*m);
-  if (s > minLength) {
+  if (s > minLength && recIters < maxIters) {
     if (tui.nonAlt.on) {//don't alternate lengths of branches
       drawBranch(w, s/wr, t, 0, -s*m, wr, wl, newCR);
       drawBranch(w, s/wl, -t, 0, -s*m, wr, wl, newCL);

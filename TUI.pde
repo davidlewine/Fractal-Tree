@@ -1,5 +1,6 @@
 
 class TUI{
+  float extraV = 6;
   float theta = 0;
   float wr = 0;
   float wl = 0;
